@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}使用完了 - {{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="card" style="text-align: center; padding: 28px 20px;">
+    <div style="font-size: 3rem; margin-bottom: 12px;">✅</div>
+    <h1 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 8px;">{{ product.name }}を1個使用しました</h1>
+    
+    <p style="font-size: 1.1rem; margin-bottom: 20px; color: var(--text-muted);">
+        現在庫：<strong style="color: var(--text-color);">{{ product.stock }}個</strong>
+    </p>
+
+    <div style="background-color: #f1f5f9; padding: 12px; border-radius: 8px; margin-bottom: 24px; font-size: 0.95rem; color: #334155;">
+        ℹ️ 3日後にシステム上の在庫が1個補充されます。
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+        <a href="{% url 'home' %}" class="btn btn-primary">ホームへ</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - 家庭内在庫管理{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 20px;">{{ title }}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">商品名 <span style="color: var(--danger-color);">*</span></label>
+            {{ form.name }}
+            {% if form.name.errors %}
+                <div style="color: var(--danger-color); font-size: 0.85rem; margin-top: 4px;">{{ form.name.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.rakuten_url.id_for_label }}">楽天市場商品URL</label>
+            {{ form.rakuten_url }}
+            {% if form.rakuten_url.errors %}
+                <div style="color: var(--danger-color); font-size: 0.85rem; margin-top: 4px;">{{ form.rakuten_url.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.stock.id_for_label }}">在庫数</label>
+            {{ form.stock }}
+            {% if form.stock.errors %}
+                <div style="color: var(--danger-color); font-size: 0.85rem; margin-top: 4px;">{{ form.stock.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        {% if form.is_active %}
+        <div class="form-group">
+            <div class="form-check">
+                {{ form.is_active }}
+                <label for="{{ form.is_active.id_for_label }}" style="margin-bottom: 0;">有効にする（無効にするとホーム一覧から非表示になります）</label>
+            </div>
+        </div>
+        {% endif %}
+
+        <div style="margin-top: 24px; display: flex; flex-direction: column; gap: 12px;">
+            <button type="submit" class="btn btn-primary">{{ btn_label }}</button>
+            <a href="{% url 'manage_product_list' %}" class="btn btn-secondary">キャンセル</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

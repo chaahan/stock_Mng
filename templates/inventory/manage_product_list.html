@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}商品管理 - 家庭内在庫管理{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+    <h1 style="font-size: 1.4rem; font-weight: 700;">商品管理</h1>
+    <a href="{% url 'manage_product_create' %}" class="btn btn-primary" style="width: auto; padding: 8px 16px; min-height: 40px; font-size: 0.95rem;">
+        ＋ 新規商品登録
+    </a>
+</div>
+
+{% if products %}
+    {% for product in products %}
+    <div class="card" style="margin-bottom: 12px; {% if not product.is_active %}opacity: 0.65; background-color: #f1f5f9;{% endif %}">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+            <div>
+                <h2 style="font-size: 1.15rem; font-weight: 700;">
+                    {{ product.name }}
+                    {% if not product.is_active %}
+                        <span style="font-size: 0.8rem; color: #ef4444; margin-left: 4px;">(無効)</span>
+                    {% endif %}
+                </h2>
+            </div>
+            <span class="badge {% if product.stock == 0 %}badge-out-of-stock{% else %}badge-in-stock{% endif %}">
+                在庫: {{ product.stock }}個
+            </span>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 12px;" class="no-print">
+            <a href="{% url 'manage_product_qr' product.id %}" class="btn btn-secondary" style="flex: 1; min-height: 40px; font-size: 0.9rem;">
+                📱 QRコード表示
+            </a>
+            <a href="{% url 'manage_product_edit' product.id %}" class="btn btn-secondary" style="flex: 1; min-height: 40px; font-size: 0.9rem;">
+                ✏️ 編集
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="card" style="text-align: center; color: var(--text-muted);">
+        商品がありません。右上の「新規商品登録」から登録してください。
+    </div>
+{% endif %}
+
+<div style="margin-top: 20px;">
+    <a href="{% url 'home' %}" class="btn btn-secondary">ホームに戻る</a>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}在庫一覧 - 家庭内在庫管理{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+    <h1 style="font-size: 1.4rem; font-weight: 700;">在庫一覧</h1>
+</div>
+
+{% if product_list %}
+    {% for item in product_list %}
+    <a href="{% url 'product_detail' item.product.id %}" style="text-decoration: none; color: inherit;">
+        <div class="card" style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h2 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 4px;">{{ item.product.name }}</h2>
+                {% if item.next_restock %}
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">
+                        🔄 補充予定: {{ item.next_restock.scheduled_at|date:"m/d H:i" }} (+{{ item.next_restock.quantity }})
+                    </p>
+                {% else %}
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">補充予定なし</p>
+                {% endif %}
+            </div>
+
+            <div style="text-align: right;">
+                <span class="badge {% if item.product.stock == 0 %}badge-out-of-stock{% else %}badge-in-stock{% endif %}" style="font-size: 1.1rem; padding: 6px 12px;">
+                    在庫: {{ item.product.stock }}個
+                </span>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+{% else %}
+    <div class="card" style="text-align: center; color: var(--text-muted);">
+        <p>登録されている有効な商品はありません。</p>
+        <p style="margin-top: 12px;">
+            <a href="{% url 'manage_product_create' %}" class="btn btn-primary" style="display: inline-block; width: auto;">商品を登録する</a>
+        </p>
+    </div>
+{% endif %}
+{% endblock %}

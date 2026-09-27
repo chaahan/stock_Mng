@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} - 詳細{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+        <h1 style="font-size: 1.4rem; font-weight: 700;">{{ product.name }}</h1>
+        <span class="badge {% if product.stock == 0 %}badge-out-of-stock{% else %}badge-in-stock{% endif %}" style="font-size: 1rem; padding: 6px 12px;">
+            現在庫: {{ product.stock }}個
+        </span>
+    </div>
+
+    <div style="margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 12px;">
+        <p style="font-size: 0.95rem; margin-bottom: 6px;">
+            <strong>補充予定合計:</strong> {{ total_pending_quantity }}個
+        </p>
+        <p style="font-size: 0.95rem; margin-bottom: 12px;">
+            <strong>次回補充予定日:</strong>
+            {% if next_restock %}
+                {{ next_restock.scheduled_at|date:"Y/m/d H:i" }} (+{{ next_restock.quantity }}個)
+            {% else %}
+                予定なし
+            {% endif %}
+        </p>
+    </div>
+
+    {% if product.rakuten_url %}
+        <a href="{{ product.rakuten_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-rakuten" style="margin-top: 8px;">
+            🛒 楽天市場の商品ページを開く
+        </a>
+    {% else %}
+        <div style="margin-top: 8px; color: var(--text-muted); font-size: 0.9rem;">
+            ※ 楽天市場のURLは登録されていません。
+        </div>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px;">未処理の補充予定一覧</h2>
+    {% if pending_schedules %}
+        <table>
+            <thead>
+                <tr>
+                    <th>予定日時</th>
+                    <th>数量</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sched in pending_schedules %}
+                <tr>
+                    <td>{{ sched.scheduled_at|date:"Y/m/d H:i" }}</td>
+                    <td>+{{ sched.quantity }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="font-size: 0.9rem; color: var(--text-muted);">現在、補充予定はありません。</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px;">在庫変更履歴</h2>
+    {% if histories %}
+        <table>
+            <thead>
+                <tr>
+                    <th>日時</th>
+                    <th>区分</th>
+                    <th>数量</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for h in histories %}
+                <tr>
+                    <td>{{ h.created_at|date:"m/d H:i" }}</td>
+                    <td>{{ h.get_change_type_display }}</td>
+                    <td style="font-weight: 600; {% if h.quantity < 0 %}color: var(--danger-color);{% else %}color: var(--success-color);{% endif %}">
+                        {{ h.quantity|stringformat:"+d" }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="font-size: 0.9rem; color: var(--text-muted);">履歴はありません。</p>
+    {% endif %}
+</div>
+
+<div style="margin-top: 16px;">
+    <a href="{% url 'home' %}" class="btn btn-secondary">ホームに戻る</a>
+</div>
+{% endblock %}

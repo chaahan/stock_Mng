@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}QRコード表示 - {{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="card" style="text-align: center; padding: 24px 16px;">
+    <h1 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 16px;">{{ product.name }}</h1>
+
+    <div style="margin: 16px 0;">
+        <img src="{% url 'generate_qr_image' product.qr_token %}" alt="QR Code" style="width: 220px; height: 220px; border: 1px solid var(--border-color); border-radius: 8px; padding: 8px; background: white;">
+    </div>
+
+    <p style="font-size: 0.85rem; color: var(--text-muted); word-break: break-all; margin-bottom: 24px;">
+        {{ qr_url }}
+    </p>
+
+    <div style="display: flex; flex-direction: column; gap: 12px;" class="no-print">
+        <button onclick="window.print()" class="btn btn-primary">
+            🖨️ 印刷する
+        </button>
+        <a href="{% url 'manage_product_list' %}" class="btn btn-secondary">
+            管理画面に戻る
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}使用確認 - {{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="card" style="text-align: center; padding: 28px 20px;">
+    <h1 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 12px;">{{ product.name }}</h1>
+    
+    <div style="margin-bottom: 24px;">
+        <span class="badge {% if product.stock == 0 %}badge-out-of-stock{% else %}badge-in-stock{% endif %}" style="font-size: 1.2rem; padding: 8px 16px;">
+            現在庫：{{ product.stock }}個
+        </span>
+    </div>
+
+    <p style="font-size: 1.15rem; font-weight: 600; margin-bottom: 28px;">
+        この商品を1個使用しますか？
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <button type="submit" name="action" value="use" class="btn btn-primary" style="font-size: 1.2rem; min-height: 56px;">
+                使用する
+            </button>
+            <button type="submit" name="action" value="cancel" class="btn btn-secondary">
+                キャンセル
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

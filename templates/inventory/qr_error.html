@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}エラー{% endblock %}
+
+{% block content %}
+<div class="card" style="text-align: center; padding: 28px 20px;">
+    <div style="font-size: 3rem; margin-bottom: 12px;">❌</div>
+    <h1 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 16px; color: var(--danger-color);">
+        {{ message }}
+    </h1>
+
+    <div style="margin-top: 24px;">
+        <a href="{% url 'home' %}" class="btn btn-secondary">ホームへ戻る</a>
+    </div>
+</div>
+{% endblock %}

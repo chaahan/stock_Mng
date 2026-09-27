@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}在庫なし - {{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="card" style="text-align: center; padding: 28px 20px;">
+    <div style="font-size: 3rem; margin-bottom: 12px;">⚠️</div>
+    <h1 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; color: var(--danger-color);">
+        在庫がなくなりました
+    </h1>
+    
+    <h2 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 8px;">{{ product.name }}</h2>
+
+    <p style="font-size: 1.1rem; margin-bottom: 20px;">
+        現在庫：<strong style="color: var(--danger-color);">0個</strong>
+    </p>
+
+    <div style="background-color: #fef2f2; border: 1px solid #fecaca; padding: 12px; border-radius: 8px; margin-bottom: 24px; font-size: 0.95rem; color: #991b1b;">
+        📅 {{ scheduled_at|date:"Y年m月d日" }} に1個補充予定です。
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+        {% if product.rakuten_url %}
+            <a href="{{ product.rakuten_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-rakuten" style="font-size: 1.1rem;">
+                🛒 楽天の商品ページへ
+            </a>
+        {% endif %}
+        <a href="{% url 'home' %}" class="btn btn-secondary">ホームへ</a>
+    </div>
+</div>
+{% endblock %}
